@@ -1,0 +1,33 @@
+---
+
+- name: Check the namespace
+  assert:
+    that:
+    - spp_namespace | string | length > 0
+
+- name: Remove the SmokePing Prober
+  k8s:
+    state: absent
+    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    wait: yes
+  loop:
+  - servicemonitor
+  - service
+  - deployment
+  - configmap
+
+- name: Delete ServiceAccount material
+  k8s:
+    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    state: absent
+    wait: yes
+  loop:
+  - rolebinding-sa
+  - role
+  - serviceaccount
+
+- name: Deleting namespace '{{ spp_namespace }}'
+  k8s:
+    state: absent
+    definition: "{{ lookup('template', 'namespace.yaml.j2') }}"
+    wait: yes

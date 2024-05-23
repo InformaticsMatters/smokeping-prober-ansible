@@ -1,0 +1,45 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: smokeping
+  namespace: {{ spp_namespace }}
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      name: smokeping
+  template:
+    metadata:
+      labels:
+        name: smokeping
+    spec:
+      nodeName: {{ spp_node_name }}
+      serviceAccountName: smokeping
+      containers:
+      - name: smokeping
+        image: {{ spp_image_registry }}/{{ spp_image_image }}:{{ spp_image_tag }}
+        imagePullPolicy: IfNotPresent
+        command:
+        - /bin/smokeping_prober
+        - --config.file=/tmp/targets.yaml
+        ports:
+        - name: metrics
+          containerPort: 9374
+        resources:
+          limits:
+            cpu: 0.2
+            memory: 32Mi
+          requests:
+            cpu: 0.2
+            memory: 32Mi
+        volumeMounts:
+        - name: targets
+          mountPath: /tmp/targets.yaml
+          subPath: targets.yaml
+      volumes:
+      - name: targets
+        configMap:
+          name: smokeping-targets

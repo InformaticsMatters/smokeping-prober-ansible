@@ -1,0 +1,27 @@
+---
+
+spp_state: present
+spp_namespace: smokeping-prober
+
+spp_image_registry: quay.io
+spp_image_image: superq/smokeping-prober
+spp_image_tag: latest
+
+spp_ping_size: 256
+spp_ping_interval: 20s
+
+spp_scrape_interval: 20s
+
+spp_node_name: xch-dev-app-small-y5
+spp_hosts:
+- 192.168.253.22
+- 192.168.253.200
+- 192.168.253.169
+- 192.168.253.164
+- 192.168.253.167
+- 192.168.253.16
+- 192.168.253.248
+
+# The Pod Security Policy (expected to exist in the cluster)
+# that is used by the stack Role object.
+spp_sa_psp: im-core-unrestricted

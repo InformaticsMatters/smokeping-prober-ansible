@@ -1,0 +1,14 @@
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: smokeping
+  namespace: "{{ spp_namespace }}"
+roleRef:
+  kind: Role
+  name: smokeping
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+- kind: ServiceAccount
+  name: smokeping
+  namespace: "{{ spp_namespace }}"

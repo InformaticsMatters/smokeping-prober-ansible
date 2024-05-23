@@ -1,0 +1,15 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: smokeping
+  namespace: {{ spp_namespace }}
+  labels:
+    name: smokeping
+spec:
+  selector:
+    name: smokeping
+  ports:
+  - name: metrics
+    port: 80
+    targetPort: 9374

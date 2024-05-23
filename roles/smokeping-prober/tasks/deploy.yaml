@@ -1,0 +1,30 @@
+---
+
+- name: Check the namespace
+  assert:
+    that:
+    - spp_namespace | string | length > 0
+
+- name: Creating namespace '{{ spp_namespace }}'
+  k8s:
+    definition: "{{ lookup('template', 'namespace.yaml.j2') }}"
+    wait: yes
+
+- name: Deploy ServiceAccount material
+  k8s:
+    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    wait: yes
+  loop:
+  - serviceaccount
+  - role
+  - rolebinding-sa
+
+- name: Deploy the SmokePing Prober
+  k8s:
+    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    wait: yes
+  loop:
+  - configmap
+  - deployment
+  - service
+  - servicemonitor

@@ -1,0 +1,20 @@
+---
+kind: ServiceMonitor
+apiVersion: monitoring.coreos.com/v1
+metadata:
+  name: smokeping
+  namespace: {{ spp_namespace }}
+spec:
+  # A selector for the Public API Service.
+  # The service to be scraped.
+  selector:
+    matchLabels:
+      name: smokeping
+  namespaceSelector:
+    matchNames:
+    - {{ spp_namespace }}
+  # The endpoint (port name)
+  # and the scraping interval
+  endpoints:
+  - port: metrics
+    interval: {{ spp_scrape_interval }}
