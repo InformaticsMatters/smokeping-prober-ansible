@@ -2,12 +2,9 @@
 
 - include_tasks: prep.yaml
 
-# A kubernetes (or OpenShift) host and an API key must be set.
-# We will either have authenticated against an OpenShift server
-# or the AWX kubernetes credentials will have injected suitable
-# values for the K8S_AUTH_HOST and K8S_AUTH_API_KEY environment variables.
-# Either way the ansible variables 'k8s_auth_host' and
-# 'k8s_auth_api_key' will have been set.
+# A kubernetes host and an API key must be set.
+# Either K8S_AUTH_HOST and K8S_AUTH_API_KEY environment variables
+# or a KUBECONFIG environment variable must be set.
 - name: Assert authentication
   assert:
     that:
@@ -29,7 +26,7 @@
     group/k8s:
       host: "{{ k8s_auth_host }}"
       api_key: "{{ k8s_auth_api_key }}"
-      validate_certs: "{{ k8s_auth_verify_ssl|default('no', true) }}"
+      validate_certs: "{{ k8s_auth_verify_ssl | default('no', true) }}"
 
   when: k8s_kubeconfig | string | length == 0
 
