@@ -10,14 +10,22 @@
     definition: "{{ lookup('template', 'namespace.yaml.j2') }}"
     wait: yes
 
-- name: Deploy ServiceAccount material
+- name: Deploy ServiceAccount
   k8s:
     definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
     wait: yes
   loop:
-  - serviceaccount
   - role
   - rolebinding-sa
+
+- name: Deploy Role and RoleBinding
+  k8s:
+    definition: "{{ lookup('template', '{{ item }}.yaml.j2') }}"
+    wait: yes
+  loop:
+  - role
+  - rolebinding-sa
+  when: spp_sa_psp | string | length > 0
 
 - name: Deploy the SmokePing Prober
   k8s:

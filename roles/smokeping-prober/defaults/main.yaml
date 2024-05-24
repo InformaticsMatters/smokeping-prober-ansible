@@ -1,11 +1,10 @@
 ---
 
 spp_state: present
-spp_namespace: smokeping-prober
 
-spp_image_registry: quay.io
-spp_image_image: superq/smokeping-prober
-spp_image_tag: latest
+# A namespace to deploy the Pod.
+# This MUST be defined.
+spp_namespace:
 
 # Ping payload size and interval
 spp_ping_size: 256
@@ -14,21 +13,21 @@ spp_ping_interval: 20s
 # Prometheus scrape interval.
 spp_scrape_interval: 20s
 
-# The cluster node name, used as the `nodeName` in the Deployment spec
-# to force the Pod onto a specific Node.
-spp_node_name: xch-dev-app-small-y5
+# The cluster node name,
+# used as the `nodeName` as a node selector in the Deployment spec.
+# Used to force the Pod onto a specific Node.
+# This MUST BE defined.
+spp_node_name:
 # The list of peer nodes to 'ping',
 # We tend to include other workers and the control nodes.
-spp_hosts:
-- 192.168.253.22
-- 192.168.253.200
-- 192.168.253.169
-- 192.168.253.164
-- 192.168.253.167
-- 192.168.253.16
-- 192.168.253.248
+# At lest one host must be defined.
+spp_hosts: []
 
 # The Pod Security Policy (expected to exist in the cluster)
 # that is used by the stack Role object.
-# We're deploying in a 1.23 cluster, so we need to use PSPs.
-spp_sa_psp: im-core-unrestricted
+# Where a PSP is required this must be set.
+spp_sa_psp:
+
+spp_image_registry: quay.io
+spp_image_image: superq/smokeping-prober
+spp_image_tag: latest

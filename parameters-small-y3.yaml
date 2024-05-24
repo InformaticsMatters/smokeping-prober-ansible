@@ -1,4 +1,5 @@
 ---
+spp_sa_psp: im-core-unrestricted
 spp_namespace: smokeping-prober-small-y3
 spp_node_name: xch-dev-app-small-y3
 spp_hosts:

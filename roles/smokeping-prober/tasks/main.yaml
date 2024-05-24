@@ -5,12 +5,33 @@
 # A kubernetes host and an API key must be set.
 # Either K8S_AUTH_HOST and K8S_AUTH_API_KEY environment variables
 # or a KUBECONFIG environment variable must be set.
-- name: Assert authentication
+- name: Check authentication
   assert:
     that:
     - k8s_auth_host | length > 0
     - k8s_auth_api_key | length > 0
   when: k8s_kubeconfig | string | length == 0
+
+- name: Check Namespace
+  assert:
+    that:
+    - spp_namespace != None
+    - spp_namespace | string | length > 0
+    fail_msg: "spp_namespace is not defined"
+
+- name: Check Node Name
+  assert:
+    that:
+    - spp_node_name != None
+    - spp_node_name | string | length > 0
+    fail_msg: "spp_node_name is not defined"
+
+- name: Check Hosts
+  assert:
+    that:
+    - spp_hosts != None
+    - spp_hosts | length > 0
+    fail_msg: "spp_hosts is not defined or is an empty list"
 
 # Go...
 
